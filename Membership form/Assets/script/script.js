@@ -4,128 +4,161 @@ const $$ = (sel, parent = document) => [...parent.querySelectorAll(sel)];
 
 const form = $("#membershipForm");
 const agreeCheck = $("#agreeCheck");
+const agreeError = $("#agreeError");
 const payBtn = $("#payBtn");
 const hint = $("#formHint");
 
-// Update file name UI + validate max size 1MB
+const MAX_BYTES = 1 * 1024 * 1024; // 1MB
+
+function markField(fieldEl, ok) {
+  if (!fieldEl) return;
+  fieldEl.classList.toggle("invalid", !ok);
+}
+
+function setAgreeError(message) {
+  if (!agreeError) return;
+  agreeError.textContent = message || "";
+}
+
 function bindFileInput(fileId) {
   const input = document.getElementById(fileId);
   const nameEl = document.querySelector(`[data-file="${fileId}"]`);
+  if (!input || !nameEl) return;
+
+  // initial state
+  input.dataset.ok = "0";
 
   input.addEventListener("change", () => {
-    if (!input.files || !input.files[0]) {
+    const file = input.files && input.files[0];
+
+    if (!file) {
       nameEl.textContent = "No File Chosen";
+      nameEl.style.color = "";
       input.dataset.ok = "0";
       togglePayButton();
       return;
     }
 
-    const file = input.files[0];
+    // show name
     nameEl.textContent = file.name;
 
-    const maxBytes = 1 * 1024 * 1024; // 1MB
-    if (file.size > maxBytes) {
+    // validate size
+    if (file.size > MAX_BYTES) {
       input.value = "";
       nameEl.textContent = "File too large (max 1MB)";
-      input.dataset.ok = "0";
       nameEl.style.color = "#D32F2F";
+      input.dataset.ok = "0";
     } else {
-      input.dataset.ok = "1";
       nameEl.style.color = "";
+      input.dataset.ok = "1";
     }
+
     togglePayButton();
   });
 }
 
 ["file1", "file2", "file3"].forEach(bindFileInput);
 
-// Field validation UI
-function markField(fieldEl, ok) {
-  if (!fieldEl) return;
-  fieldEl.classList.toggle("invalid", !ok);
-}
-
 function validateFormUI() {
+  if (!form) return false;
+
   let ok = true;
 
-  // Required inputs/selects/textareas
-  const requiredControls = $$("input[required], select[required], textarea[required]", form);
+  const requiredControls = $$(
+    "input[required]:not([type='file']), select[required], textarea[required]",
+    form
+  );
 
   requiredControls.forEach((control) => {
-    // file inputs handled separately
-    if (control.type === "file") return;
-
     let valid = true;
 
     if (control.tagName === "SELECT") {
       valid = !!control.value;
     } else if (control.type === "email") {
-      valid = control.value.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(control.value.trim());
+      const v = control.value.trim();
+      valid = v.length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    } else if (control.type === "checkbox") {
+      valid = control.checked;
     } else {
       valid = control.value.trim().length > 0;
     }
 
-    const wrapper = control.closest(".field");
-    markField(wrapper, valid);
+    markField(control.closest(".field"), valid);
     if (!valid) ok = false;
   });
 
-  // Files required + size ok
-  const fileOk =
-    ($("#file1").dataset.ok === "1") &&
-    ($("#file2").dataset.ok === "1") &&
-    ($("#file3").dataset.ok === "1");
+  // file validation
+  const f1 = $("#file1");
+  const f2 = $("#file2");
+  const f3 = $("#file3");
 
-  if (!fileOk) ok = false;
+  if (f1 && f2 && f3) {
+    const fileOk = f1.dataset.ok === "1" && f2.dataset.ok === "1" && f3.dataset.ok === "1";
+    if (!fileOk) ok = false;
+  }
 
   return ok;
 }
 
 function togglePayButton() {
   const isValid = validateFormUI();
-  const agreed = agreeCheck.checked;
+  const agreed = !!(agreeCheck && agreeCheck.checked);
 
-  payBtn.disabled = !(isValid && agreed);
+  if (payBtn) payBtn.disabled = !(isValid && agreed);
 
-  if (payBtn.disabled) {
-    hint.textContent = agreed
-      ? "Please fill required fields and upload valid files (max 1MB)."
-      : "Please fill required fields and accept the agreement.";
-  } else {
-    hint.textContent = "All set! You can proceed to payment.";
+  if (hint) {
+    if (!isValid) {
+      hint.textContent = "Please fill required fields and upload valid files (max 1MB).";
+    } else if (!agreed) {
+      hint.textContent = "Please accept the agreement to continue.";
+    } else {
+      hint.textContent = "All set! You can proceed to payment.";
+    }
   }
+
+  // live error clear
+  if (!agreed) setAgreeError("");
 }
 
-// Live validation
-form.addEventListener("input", togglePayButton);
-form.addEventListener("change", togglePayButton);
-agreeCheck.addEventListener("change", togglePayButton);
+if (form) {
+  form.addEventListener("input", togglePayButton);
+  form.addEventListener("change", togglePayButton);
 
-// Submit (demo)
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
+    const isValid = validateFormUI();
+    const agreed = !!(agreeCheck && agreeCheck.checked);
+
+    if (!agreed) {
+      setAgreeError("Please accept the agreement to continue.");
+      $(".agree")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      togglePayButton();
+      return;
+    }
+
+    if (!isValid) {
+      togglePayButton();
+      $(".field.invalid", form)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // success demo
+    payBtn.textContent = "Processing...";
+    payBtn.disabled = true;
+
+    setTimeout(() => {
+      alert("Form validated successfully ✅\nProceed to your payment gateway now.");
+      payBtn.textContent = "Proceed to Payment";
+      togglePayButton();
+    }, 700);
+  });
+}
+
+agreeCheck?.addEventListener("change", () => {
+  setAgreeError("");
   togglePayButton();
-  if (payBtn.disabled) {
-    // bring first invalid field into view
-    const firstInvalid = $(".field.invalid", form);
-    if (firstInvalid) firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
-    return;
-  }
-
-  // Collect values (example)
-  const data = new FormData(form);
-
-  // Demo success message (replace with your payment flow)
-  payBtn.textContent = "Processing...";
-  payBtn.disabled = true;
-
-  setTimeout(() => {
-    alert("Form validated successfully ✅\nProceed to your payment gateway now.");
-    payBtn.textContent = "Proceed to Payment";
-    togglePayButton();
-  }, 700);
 });
 
-// Initial state
+// initial
 togglePayButton();

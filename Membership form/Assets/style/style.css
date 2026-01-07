@@ -162,7 +162,7 @@ text-align: center;
   color: #2F3460;
   margin: 0 0 8px;
 }
-.req{ color:#E53935; }
+.req{ color: red; }
 
 .field input,
 .field select,
@@ -185,22 +185,22 @@ text-align: center;
 .field select:focus,
 .field textarea:focus{
   border-color: rgba(77,88,216,.95);
-  box-shadow: 0 0 0 4px rgba(77,88,216,.16);
+  /* box-shadow: 0 0 0 4px rgba(77,88,216,.16); */
 }
 
 .field .err{
   display:none;
   margin-top: 6px;
   font-size: 11px;
-  color:#D32F2F;
+  color:#bfc6ffbf;
   font-weight: 600;
 }
 
 .field.invalid input,
 .field.invalid select,
 .field.invalid textarea{
-  border-color: rgba(211,47,47,.9);
-  box-shadow: 0 0 0 4px rgba(211,47,47,.12);
+  border-color:#bfc6ffbf;
+  /* box-shadow: 0 0 0 4px rgba(211,47,47,.12); */
 }
 .field.invalid .err{ display:block; }
 
@@ -403,7 +403,7 @@ text-align: center;
   margin: 8px 0 0;
   font-size: 11px;
   font-weight: 700;
-  color: #D32F2F;
+  color: #bfc6ffbf;
 }
 
 /* Action button */

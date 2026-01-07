@@ -79,8 +79,8 @@ body{
   margin: 0 0 10px;
   font-size: 28px;
   line-height: 1.1;
-  font-weight: 900;
-  color: #2E3AAE;
+  font-weight: 700;
+  color: #4d58d8;
 }
 .hero-card .accent{ color: var(--brand); }
 .hero-card .small{
@@ -98,16 +98,18 @@ body{
   margin-top: 10px;
 }
 .pill{
+text-align: center;
   background: rgba(255,255,255,.65);
   border: 1px solid rgba(191,198,255,.85);
   border-radius: 12px;
   padding: 10px 12px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: #2F3460;
   box-shadow: 0 8px 16px rgba(18,26,90,.06);
 }
 .pill span{
+  
   color: var(--brand);
   margin-right: 6px;
 }
@@ -119,7 +121,7 @@ body{
   margin: 0 0 8px;
   font-size: 14px;
   font-weight: 700;
-  color: #2D39AF;
+  color: #4d58d8;
 }
 .rules-card .mt{ margin-top: 12px; }
 .list{
@@ -142,8 +144,8 @@ body{
 .section-head h2{
   margin:0;
   font-size: 22px;
-  color: #2D39AF;
-  font-weight: 900;
+  color: #4d58d8;
+  font-weight: 700;
 }
 .section-head p{
   margin: 6px 0 0;
@@ -230,8 +232,8 @@ body{
 .sub-head h2{
   margin:0;
   font-size: 20px;
-  color:#2D39AF;
-  font-weight: 900;
+  color:#4d58d8;
+  font-weight: 700;
 }
 .sub-head p{
   margin: 6px 0 0;

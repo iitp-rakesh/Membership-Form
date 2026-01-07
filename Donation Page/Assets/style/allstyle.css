@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+/* All Hero Section */
+/* Apply Poppins font globally */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.all-hero-container {
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Make container relative for absolute positioning of locator */
+    margin-top: 4.5em;
+}
+@media(max-width:768px){
+    .all-hero-container {
+        margin-top: 3.5em;
+    }
+    .locator p{
+        line-height: 35px!important;
+    }
+    .locator{
+        height: 40px!important;
+    }
+}
+.all-hero {
+    position: relative;
+    width: 100%; /* Image takes full width */
+    /* height: 300px; */
+    overflow: hidden; /* Ensure image doesn't overflow */
+    display:flex;
+    align-items:center;
+}
+
+.all-hero-img {
+    width: 100%;
+    height: 100%;
+    object-position: left;
+    object-fit: cover;
+}
+/* 
+.all-hero-text {
+    position:absolute;
+    color: #5d4ce6;
+    margin: 0 70px;
+    left:7vw;
+    margin:0;
+    z-index:2;
+} */
+
+.all-hero h1 {
+    font-size: 3rem;
+    /* position: absolute;
+    left: 7vw; */
+    margin: 0;
+    min-width: 18rem;
+}
+@media(max-width:1024px){
+    .all-hero h1 {
+        font-size: 2em;
+    }
+}
+@media(max-width:500px){
+    .all-hero h1 {
+        font-size: 1em;
+    }
+}
+/* Locator */
+.locator {
+    font-size: 1.2rem;
+    background-color: white; /* Your specified color*/
+    color: #5d4ce6;
+    text-align: center;
+    border:solid 2px #5d4ce6;
+    border-radius: 10px ;
+    height: 50px;
+    width: 200px;
+    position: absolute; /* Absolute positioning */
+    bottom: -25px; /* Half above, half below */
+    left: 20px; /* Align with the hero text */
+}
+.locator:hover{
+    color: white;
+    background-color: #5d4ce6;
+}
+.locator p{
+    line-height: 50px;
+}
+img.event-hero-img {
+    width: 100%;
+}
+/* .finalbannerborder{
+    height: 100%;
+    width:100%;
+    margin-right: -20px;
+} */
+.scroll-to-top-btn {
+    /* display: none;
+    background-color: #6674CC;
+    color: white; 
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5em; 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;  */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    display: none; /* Initially hidden */
+    border: none;
+    outline: none;
+    background-color: #6674CC;
+    color: white;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 18px;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+  }

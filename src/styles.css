@@ -1,0 +1,28 @@
+.icon-btn {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  padding: 0;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.file-error {
+  color: #d32f2f;
+}
+
+.field.invalid input,
+.field.invalid select,
+.field.invalid textarea {
+  border-color: #d32f2f;
+}
+
+.field.invalid input:focus,
+.field.invalid select:focus,
+.field.invalid textarea:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15);
+}

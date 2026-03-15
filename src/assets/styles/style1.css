@@ -337,7 +337,7 @@ body.no-scroll {
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
   text-align: center;
-  background-image: url("../assets/images/back.jpg");
+  background-image: none;
   background-size: cover; 
   background-position: center;
   margin-top: 30px;
